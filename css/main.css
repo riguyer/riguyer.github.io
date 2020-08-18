@@ -40,16 +40,22 @@ p {
     line-height: 1.4em;
     color: #333;
 }
+blockquote {
+    font-size: small;
+    color: #333;
+    margin: 20px;
+    padding: 20px;
+    font-weight: bold;
+    font-family: 'Inconsolata', 'Consolas', 'Courier', 'Courier New';
+}
 footer {
     border-top: 1px solid #d5d5d5;
     font-size: .8em;
 }
-
 ul.posts { 
     margin: 20px auto 40px; 
     font-size: 1.5em;
 }
-
 ul.posts li {
     list-style: none;
 }
