@@ -23,10 +23,10 @@ It turns out it is as simple as rerunning 'cellranger count' for each sample wit
 have access to a computing cluster or a very powerful workstation you don't mind tying up for an extended period.) Since the FASTQs are stashed in different 
 locations by the original Cell Ranger runs, you can use a comma-separated list of FASTQ directories. For each library, the Cell Ranger command will be:
 
-> cellranger count `--`id=sample_id \
-> `--`fastqs=/path/to/run1/fastqs,/path/to/run2/fastqs,etc \
-> `--`transcriptome=/path/to/refernce/genome \
-> `--`chemistry=auto \
+> cellranger count `--`id=sample_id `\`
+> `--`fastqs=/path/to/run1/fastqs,/path/to/run2/fastqs,etc `\`
+> `--`transcriptome=/path/to/refernce/genome `\`
+> `--`chemistry=auto `\`
 > `--`nosecondary
   
 I did not want to have to manually write a script and submit it to the cluster for every library, especially if I ever run across this issue again (and given the
