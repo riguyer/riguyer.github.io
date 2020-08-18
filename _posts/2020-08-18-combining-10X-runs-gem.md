@@ -11,9 +11,9 @@ flow cells, to allow them to optimize conditions between the two runs. None of o
 
 The issue is that the Bauer Core automates running of the [Cell Ranger](https://support.10xgenomics.com/single-cell-gene-expression/software/overview/welcome) 
 pipeline as soon as each flow cell has finished. Given the obvious manpower savings inherent to this approach, I suspect virtually all sequencing cores use a 
-similar system. The upshot is that the core delivers you *two* 10X outputs for each sample, one from each flow cell, and each of which has 1/2 the sequencing depth 
-you were anticipating. In principle this is an easy problem to fix - you just combine the two datasets, and viola, you have one dataset with the desired sequencing
-depth. Pratically, however, one needs to figure out how to do that.
+similar system. The upshot is that the core delivers you *two* 10X outputs for each sample, one from each flow cell, and each of which has 1/2 the sequencing
+depth you were anticipating. In principle this is an easy problem to fix - you just combine the two datasets, and viola, you have one dataset with the desired
+sequencing depth. Pratically, however, one needs to figure out how to do that.
 
 The other issue was that half of our samples were from mouse tissue, and half were from human cells. Unfortunately, the initial pipeline was run using a mouse
 reference genome for all of the samples. So, I also needed to rerun the pipeline for human cells with a human refernce genome.
@@ -29,17 +29,18 @@ locations by the original Cell Ranger runs, you can use a comma-separated list o
 > --chemistry=auto \
 > --nosecondary
   
-I did not want to have to manually generate a script and submit it to the cluster for every library, especially if I ever run across this issue again (and given the
+I did not want to have to manually write a script and submit it to the cluster for every library, especially if I ever run across this issue again (and given the
 amount of single cell gene expression analysis I anticipate doing, that seems likely). So, I wrote a pair of shell scripts to automate this process, and to assign
 each library to the appropriate reference genome. You can see and download the code [here](https://github.com/riguyer/shell-functions/tree/master/combine_10X). Of
-course, these scripts are specific to the LSF platform, which is what MGB (formerly Partners HealthCare) uses to schedule jobs on their resarch computing cluster. If
-your organization uses a different scheduler, the scripts will need to be modified accordingly.
+course, these scripts are specific to the LSF platform, which is what MGB (formerly Partners HealthCare) uses to schedule jobs on their resarch computing cluster.
+If your organization uses a different scheduler, the scripts will need to be modified accordingly.
 
-To use these scripts, place both .sh files in a directory containing the automated Cell Ranger output from each flow cell. Modify the 'run_dirs' variable to contain
-the path to each run. Then run the following from the command line:
+To use these scripts, place both .sh files in a directory containing the automated Cell Ranger output from each flow cell. Modify the 'run_dirs' variable to
+contain the path to each run. Then run the following from the command line:
 
 > bash parallel_combine.sh -hs {human samples} -mm {mouse samples}
 
-This will automatically generate .lsf files for each library with the appropriate reference genome and submit the scripts to the LSF scheduler. I wrote [make_lsf.sh](https://github.com/riguyer/shell-functions/blob/master/combine_10X/make_lsf.sh)
-to request 6 cores and 32 GB memory for each submission, which was sufficient to successfully run the pipeline on each sample in a little over 24 hrs from the time
-the job begins. You can tweak this based on the resource limits imposed by your organization.
+This will automatically generate .lsf files for each library with the appropriate reference genome, stash them in a subdirectory, and submit the scripts to the
+LSF scheduler. I wrote [make_lsf.sh](https://github.com/riguyer/shell-functions/blob/master/combine_10X/make_lsf.sh)
+to request 6 cores and 32 GB memory for each submission, which was sufficient to successfully run the pipeline on each sample in a little over 24 hrs. You can
+tweak this based on the resource limits imposed by your organization.
