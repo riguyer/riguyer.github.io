@@ -1,6 +1,6 @@
 ---
 layout: posts
-title: "I ran a one 10X single cell gene expression library on two or more flow cells. What now?"
+title: "I sequenced one 10X single cell gene expression library on multiple flow cells. What now?"
 date: 2020-08-18
 ---
 
