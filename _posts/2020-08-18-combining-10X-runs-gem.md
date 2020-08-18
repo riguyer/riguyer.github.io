@@ -16,7 +16,7 @@ you were anticipating. In principle this is an easy problem to fix - you just co
 depth. Pratically, however, one needs to figure out how to do that.
 
 The other issue was that half of our samples were from mouse tissue, and half were from human cells. Unfortunately, the initial pipeline was run using a mouse
-reference genome for all of the samples. So, I also needed to rerun the pipeline the human cells with a human refernce genome.
+reference genome for all of the samples. So, I also needed to rerun the pipeline for human cells with a human refernce genome.
 
 The [10X website](https://www.10xgenomics.com/) offers some insight into solving this problem [here](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count) and [here](https://kb.10xgenomics.com/hc/en-us/articles/360000930812-Can-I-combine-data-from-multiple-sequencing-runs-for-the-same-10x-library-).
 It turns out it is as simple as rerunning 'cellranger count' for each sample with the FASTQ files from both flow cells. (Of course, this means you need to either 
