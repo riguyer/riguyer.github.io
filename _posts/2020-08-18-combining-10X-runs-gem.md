@@ -16,18 +16,18 @@ depth you were anticipating. In principle this is an easy problem to fix - you j
 sequencing depth. Pratically, however, one needs to figure out how to do that.
 
 The other issue was that half of our samples were from mouse tissue, and half were from human cells. Unfortunately, the initial pipeline was run using a mouse
-reference genome for all of the samples. So, I also needed to rerun the pipeline for human cells with a human refernce genome.
+reference genome for all of the samples. So, I also needed to rerun the pipeline for human cells with a human reference genome.
 
 The [10X website](https://www.10xgenomics.com/) offers some insight into solving this problem [here](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count) and [here](https://kb.10xgenomics.com/hc/en-us/articles/360000930812-Can-I-combine-data-from-multiple-sequencing-runs-for-the-same-10x-library-).
 It turns out it is as simple as rerunning 'cellranger count' for each sample with the FASTQ files from both flow cells. (Of course, this means you need to either 
 have access to a computing cluster or a very powerful workstation you don't mind tying up for an extended period.) Since the FASTQs are stashed in different 
 locations by the original Cell Ranger runs, you can use a comma-separated list of FASTQ directories. For each library, the Cell Ranger command will be:
 
-> cellranger count --id=sample_id \
-> --fastqs=/path/to/run1/fastqs,/path/to/run2/fastqs,etc \
-> --transcriptome=/path/to/refernce/genome \
-> --chemistry=auto \
-> --nosecondary
+> cellranger count `--`id=sample_id \
+> `--`fastqs=/path/to/run1/fastqs,/path/to/run2/fastqs,etc \
+> `--`transcriptome=/path/to/refernce/genome \
+> `--`chemistry=auto \
+> `--`nosecondary
   
 I did not want to have to manually write a script and submit it to the cluster for every library, especially if I ever run across this issue again (and given the
 amount of single cell gene expression analysis I anticipate doing, that seems likely). So, I wrote a pair of shell scripts to automate this process, and to assign
